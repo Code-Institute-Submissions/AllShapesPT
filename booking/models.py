@@ -80,6 +80,7 @@ class BookedSession(models.Model):
     phone = models.IntegerField(null=True, blank=True)
     email = models.EmailField(max_length=100, blank=True, null=True)
     booked_time = models.DateTimeField()
+    created_on = models.DateTimeField(auto_now_add=True)
     session_type = models.ForeignKey(
         SessionType, on_delete=models.PROTECT,
         related_name='session_type',
