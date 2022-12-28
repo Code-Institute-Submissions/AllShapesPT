@@ -30,7 +30,7 @@ class Scheduling(models.Model):
     special_days_off = models.TextField(
         verbose_name='Holidays and other special days off',
         validators=[RegexValidator(
-            r'^(\s{0,})(\d{2}\-\d{2}\-\d{4})(,\d{2}\-\d{2}\-\d{4}){1,}(\s){0,}$',
+            r'^(\s{0,})(\d{4}\-\d{2}\-\d{2})(,\d{4}\-\d{2}\-\d{2}){1,}(\s){0,}$',
             message='Wrong format entered!'
             )],
         help_text='Enter dates, comma separated, no space '
@@ -67,5 +67,26 @@ class SessionType(models.Model):
 
     def __str__(self):
         return f"{self.title}, {self.customer_length} Min, ₩{self.price}"
+
+
+class BookedSession(models.Model):
+    """
+    Model for booking of sessions.
+    """
+    user = models.ForeignKey(User, on_delete=models.PROTECT, null=True,
+                             blank=True)
+    f_name = models.CharField(max_length=50, null=True, blank=True)
+    l_name = models.CharField(max_length=50, null=True, blank=True)
+    phone = models.IntegerField(null=True, blank=True)
+    email = models.EmailField(max_length=100, blank=True, null=True)
+    booked_time = models.DateTimeField()
+    session_type = models.ForeignKey(
+        SessionType, on_delete=models.PROTECT,
+        related_name='session_type',
+        null=True)
+    
+    def confirm(self, *args, **kwargs):
+        self.booked_time = self.booked_time.replace(tzinfo=None)
+        super(BookedSession, self).save(*args, **kwargs)
 
 
