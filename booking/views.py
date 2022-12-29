@@ -1,15 +1,24 @@
 from django.shortcuts import render
 from django.views import View
 from .models import *
+from django.http import HttpResponseRedirect
 
 
-class HomePage(View):
-    
-    def get(self, request):
-        """
-        Function to retrieve and display all session types created in admin.
-        """
+# class HomePage(View):
 
-        queryset = list(SessionType.objects.filter(listed=True))
-        sessiontypes = {"sessiontypes": queryset, "is_home": True}
-        return render(request, "index.html", context=sessiontypes)
+    # def get(self, request):
+    #     """
+    #     Function to retrieve and display all session types created in admin.
+    #     """
+    #     queryset = list(SessionType.objects.filter(listed=True))
+    #     sessiontypes = {"sessiontypes": queryset, "is_home": True}
+    #     return render(request, "index.html", context=sessiontypes)
+
+def view_items(request):
+    sessiontypes = SessionType.objects.filter(listed=True)
+    heroimages = HeroImage.objects.filter(listed=True)
+    context = {
+        'sessiontypes': sessiontypes,
+        'heroimages': heroimages
+        }
+    return render(request, 'index.html', context)

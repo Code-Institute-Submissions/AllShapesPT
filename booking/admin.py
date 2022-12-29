@@ -31,3 +31,9 @@ class BookedSessionAdmin(admin.ModelAdmin):
    
     class Meta:
         ordering = ['-booked_time']
+
+
+@admin.register(HeroImage)
+class HeroImageAdmin(admin.ModelAdmin):
+    list_display = ('image', 'slide_nr', 'listed',)
+    list_filter = ('image', 'slide_nr', 'listed',)

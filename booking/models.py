@@ -94,7 +94,19 @@ class BookedSession(models.Model):
     
 class HeroImage(models.Model):
     """
-    Model for setting the hero image
+    Model for setting the hero image slides
     """
-    image = CloudinaryField('image', default='placeholder_cover')
+    image = CloudinaryField('Image (16:9)', default='placeholder_cover')
     listed = models.BooleanField(default=False)
+    SLIDE_NR_CHOICES = (
+        (0,'First'),
+        (1,'Second'),
+        (2,'Third'),
+        (3,'Fourth'),
+        (4,'Fifth'),
+    )
+    slide_nr = models.IntegerField(choices=SLIDE_NR_CHOICES,)
+
+    def __str__(self):
+        return f"{self.slide_nr}"
+
