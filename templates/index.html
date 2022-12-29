@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container p-sm-4 full-width">
+    <div class="row p-sm-0 p-4">
+        {% for sessiontype in sessiontypes %}
+        <div class="card col-sm-12 col-md m-xl-5 m-lg-2 m-md-2 mb-3">
+            <a class="stretched-link" href="#"></a>
+            {% if "placeholder" in sessiontype.image.url %}
+            <img src="https://res.cloudinary.com/diso2qz9e/image/upload/v1671330252/cld-sample-3.jpg" alt="image of {{sessiontype.title}}" class="card-img-top">
+            {% else %}
+            <img src="{{ sessiontype.image.url }}" alt="image of {{sessiontype.title}}" class="card-img-top">
+            {% endif %}
+            <div class="card-body">
+                <h4 class="card-title mb-3 mt-1">{{ sessiontype.title }}</h4>
+                <p class="card-text">{{ sessiontype.short_description }}</p>
+                <a href="#" class="btn position-relative z- btn-secondary btn-lg col-12 btn-card"
+                    style="z-index: 3;">See Availavble Times</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{%endblock%}

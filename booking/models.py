@@ -2,6 +2,7 @@ from django.db import models
 from cloudinary.models import CloudinaryField
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
+from django.utils.html import escape
 
 
 class Scheduling(models.Model):
@@ -62,11 +63,11 @@ class SessionType(models.Model):
     customer_length = models.IntegerField(verbose_name='Session lenght(min)'
                                                        ' with customer')
     real_length = models.IntegerField(verbose_name='Session lenght(min)'
-                                                   ' including prep/post work')
+                                                   ' including post work')
     listed = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.title}, {self.customer_length} Min, ₩{self.price}"
+        return f"{self.title}"
 
 
 class BookedSession(models.Model):
@@ -90,4 +91,10 @@ class BookedSession(models.Model):
         self.booked_time = self.booked_time.replace(tzinfo=None)
         super(BookedSession, self).save(*args, **kwargs)
 
-
+    
+class HeroImage(models.Model):
+    """
+    Model for setting the hero image
+    """
+    image = CloudinaryField('image', default='placeholder_cover')
+    listed = models.BooleanField(default=False)
