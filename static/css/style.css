@@ -26,6 +26,11 @@ body{
 .img-fluid{
     align-content: center;
 }
+
 .footer-p{
     font-size: smaller;
+}
+
+.fa-brands:hover{
+    color: #00b8ff;
 }
