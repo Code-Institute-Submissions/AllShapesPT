@@ -15,6 +15,9 @@ from django.http import HttpResponseRedirect
     #     return render(request, "index.html", context=sessiontypes)
 
 def view_items(request):
+    """
+    Function to render homepage view
+    """
     sessiontypes = SessionType.objects.filter(listed=True)
     heroimages = HeroImage.objects.filter(listed=True)
     context = {
@@ -22,3 +25,14 @@ def view_items(request):
         'heroimages': heroimages
         }
     return render(request, 'index.html', context)
+
+# class BookingView(View):
+#      """
+#     View for booking page
+#     """
+#     def get(self,request):
+#         user_reg{}
+#     yesterday = datetime.today() - timedelta(days=1)
+#     bookedQueryset = list(BookedSession.objects.filter(
+#         date_time__gt=yesterday).order_by("date_time").values())
+#     planningQueryset = list(Planning.objects.filter(active=True).order_by("title").values())

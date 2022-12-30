@@ -21,33 +21,39 @@
 <body class="d-flex flex-column min-vh-100">
     <header>
         <nav class="darker-blue navbar navbar-expand-lg">
-            <a class="navbar-brand" href="#"><span class="logo-font">Allshapes</span> PT Studio</a>
+            <a class="navbar-brand" href="{% url 'home' %}"><span class="logo-font">Allshapes</span> PT Studio</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
+              <i class="fa-sharp fa-solid fa-bars hamburger"></i>
             </button>
           
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Link</a>
+                  <a class="nav-link" href="#">Sessions</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Book</a>
+                </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
+                    Options
                   </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
+                  <div class="dropdown-menu darker-blue" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">View Booked Times</a>
+                    <a class="dropdown-item" href="#">Update Info</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                    <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
                   </div>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link disabled" href="#">Disabled</a>
+                {% else %}
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'account_login' %}">Login</a>
                 </li>
+                {% endif %}
               </ul>
             </div>
           </nav>
@@ -59,7 +65,8 @@
         {% endblock content %}
     </main>
       <footer>
-        <div class="footer darker-blue pt-3">
+        <div class="footer fixed-bottom darker-blue pt-3
+        ">
           <div class="container">
             <div class="row">
               <div class="col-md-4 col-lg-4">
@@ -71,7 +78,7 @@
                     <p class="footer-p"><i class="fas fa-envelope"></i><a href="mailto:allshapespt@outlook.com"> allshapespt@outlook.com</a></p>
                     </div>
                     <div class="col-md-4 col-lg-3">
-                      <p class="footer-p footer-socials">
+                      <p class="footer-p">
                         <i class="fa-brands fa-facebook mx-3"></i>
                         <i class="fa-brands fa-instagram mx-3"></i>
                         <i class="fa-brands fa-tiktok mx-3"></i>
