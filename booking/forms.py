@@ -40,6 +40,5 @@ class BookingForm(forms.ModelForm):
             'f_name',
             'l_name',
             'date',
-            'time',
             'phone',)
     
