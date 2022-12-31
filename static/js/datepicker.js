@@ -1,4 +1,0 @@
-
-
-
-jQuery('#datepicker').datetimepicker()

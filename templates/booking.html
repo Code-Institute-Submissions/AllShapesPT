@@ -3,23 +3,20 @@
 
 {% block content %}
 {% load crispy_forms_tags %}
+{{ form.media }}
 
 <div class="box-shadow-bottom container p-sm-4 full-width my-5 darker-blue">
     <div class="row p-sm-0 p-4">
             <div class="col-md-6 col-12">
-                <form method="post" id="booking_form">
+                <form method="post" id="booking_form" >
                     {% csrf_token %}
                     {{ booking_form | crispy }}
                     <div class="my-4">
-                        <button type="submit" class="btn btn-secondary btn-card btn-lg">Book</button>
+                        <button type="submit" class="btn btn-primary">Confirm Booking</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<link rel="stylesheet" type="text/css" href="/jquery.datetimepicker.css"/ >
-<script src="/jquery.js"></script>
-<script src="/build/jquery.datetimepicker.full.min.js"></script>
-<script src="{% static 'js/datepicker.js' %}"></script>
 {% endblock %}

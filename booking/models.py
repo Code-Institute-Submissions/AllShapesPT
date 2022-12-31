@@ -3,53 +3,7 @@ from cloudinary.models import CloudinaryField
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from django.utils.html import escape
-
-
-class Scheduling(models.Model):
-    """
-    Model for scheduling of bookable times.
-    """
-    title = models.CharField(
-        max_length=100,
-        unique=True, 
-        default='Default Schedule',
-    )
-
-    days_off = models.CharField(
-        max_length=10, 
-        verbose_name='Weekly days off',
-        validators=[RegexValidator(
-            r'^[1-7](,[1-7])*$',
-            message='Wrong format entered!'
-            )],
-        help_text='Weekdays = 1-7, 1 Being monday, 7 being sunday. Add '
-                  'weekdays off, comma separated Example for Wednesdays &'
-                  'Fridays off: 3,5'
-
-    )
-
-    special_days_off = models.TextField(
-        verbose_name='Holidays and other special days off',
-        validators=[RegexValidator(
-            r'^(\s{0,})(\d{4}\-\d{2}\-\d{2})(,\d{4}\-\d{2}\-\d{2}){1,}(\s){0,}$',
-            message='Wrong format entered!'
-            )],
-        help_text='Enter dates, comma separated, no space '
-                  'Example: 2023-01-01,2023-12-31'
-        
-    )
-
-    bookable_times = models.TextField(
-        validators=[RegexValidator(
-            r'^(?:[01]\d|2[1-3]):[0-5]\d(?::[0-5]\d)?'
-            r'(?:,(?:[01]\d|2[1-3]):[0-5]\d(?::[0-5]\d)?)*$',
-            message='Wrong format entered!'
-            )],
-        help_text='Format is HOURS:MINUTES, comma separated, no space, '
-                  'Example: 08:15,10:30,11:00'
-    )
-    listed = models.BooleanField(default=False, verbose_name='Active schedule')
-
+import datetime
 
 class SessionType(models.Model):
     """
@@ -60,10 +14,8 @@ class SessionType(models.Model):
     short_description = models.CharField(max_length=200)
     image = CloudinaryField('image', default='placeholder')
     price = models.DecimalField(max_digits=20, decimal_places=2)
-    customer_length = models.IntegerField(verbose_name='Session lenght(min)'
+    length = models.IntegerField(verbose_name='Session lenght(min)'
                                                        ' with customer')
-    real_length = models.IntegerField(verbose_name='Session lenght(min)'
-                                                   ' including post work')
     listed = models.BooleanField(default=False)
 
     def __str__(self):
@@ -74,22 +26,22 @@ class BookedSession(models.Model):
     """
     Model for booking of sessions.
     """
+    STAUTS = ((0, 'Requested'),(1, 'Approved'))
+    TIMES = ((0, '08:00'), (1, '09:00'), (2, '10:00'), (3, '11:00'), (4, '12:00'), (5, '13:00'), (6, '14:00'), (7, '15:00'), (8, '16:00'))
     user = models.ForeignKey(User, on_delete=models.PROTECT, null=True,
                              blank=True)
     f_name = models.CharField(max_length=50, null=True, blank=True)
     l_name = models.CharField(max_length=50, null=True, blank=True)
     phone = models.IntegerField(null=True, blank=True)
     email = models.EmailField(max_length=100, blank=True, null=True)
-    booked_time = models.DateTimeField()
+    date = models.DateField(default=datetime.date.today)
+    time = models.IntegerField(choices=TIMES)
     created_on = models.DateTimeField(auto_now_add=True)
     session_type = models.ForeignKey(
         SessionType, on_delete=models.PROTECT,
         related_name='session_type',
         null=True)
-    
-    def confirm(self, *args, **kwargs):
-        self.booked_time = self.booked_time.replace(tzinfo=None)
-        super(BookedSession, self).save(*args, **kwargs)
+    status = models.IntegerField(choices=STAUTS, default=0)
 
     
 class HeroImage(models.Model):
